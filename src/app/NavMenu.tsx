@@ -26,14 +26,19 @@ export default function NavMenu() {
 
   async function signOut() {
     setOpen(false);
+    setLoggedIn(false);
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
           setLoggedIn(false);
           redirect("/auth/sign-in");
         },
+        onFailure: () => {
+          setLoggedIn(true);
+        },
       },
     });
+    setLoggedIn(true);
   }
 
   if (!loggedIn) return null;
