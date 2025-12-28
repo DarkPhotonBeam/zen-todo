@@ -3,6 +3,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { getTodo } from "@/lib/query-todo";
+import { cleanTodos } from "@/lib/clean-todos";
+import { logger } from "@/lib/logger";
 
 const MAX_TODOS = 100;
 
@@ -46,9 +48,15 @@ export async function POST(request: Request) {
       data: { ...valResult.data, user: { connect: { id: userId } } },
     });
 
+    // We do not await this action since we don't need to wait for the result
+    cleanTodos(userId).then((r) => {
+      if (!r || r.count === 0) return;
+      logger.info(`Cleaned up ${r.count} todos.`);
+    });
+
     return NextResponse.json({ success: true, data: res });
-  } catch (error) {
-    console.warn(error);
+  } catch {
+    logger.error(`Failed to add todo.`);
     return NextResponse.json({ success: false, error: `Could not add todo.` });
   }
 }
@@ -87,6 +95,7 @@ export async function PUT(request: NextRequest) {
       },
     });
   } catch {
+    logger.error(`Updating todo for user ${userId} failed.`);
     return NextResponse.json({
       success: false,
       error: "Updating todo failed.",

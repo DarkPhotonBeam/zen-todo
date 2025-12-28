@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { logger } from "@/lib/logger";
 
 export async function getTodo() {
   const session = await auth.api.getSession({
@@ -12,20 +13,16 @@ export async function getTodo() {
   }
 
   try {
-    const todos = await prisma.todo.findMany({
+    const sortedTodos = await prisma.todo.findMany({
       where: { userId: session.user.id, completed: false },
       orderBy: [{ length: "asc" }, { createdAt: "asc" }],
     });
 
-    const sortedTodos = todos;
-
-    console.log(sortedTodos);
-
     if (sortedTodos.length === 0) return null;
 
     return sortedTodos[0];
-  } catch (e) {
-    console.warn(e);
+  } catch {
+    logger.error("Failed to query todos.");
     return null;
   }
 }
