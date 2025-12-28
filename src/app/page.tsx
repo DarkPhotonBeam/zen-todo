@@ -1,66 +1,73 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import css from "./page.module.scss";
+import AuthWrapper from "@/components/AuthWrapper";
+import Link from "next/link";
+import Button from "@/components/input/Button";
+import { getTodo } from "@/lib/fetch-todo";
+import { TodoLength } from "@/generated-types/enums";
+import { todoLengthString } from "@/lib/client-helpers";
 
-export default function Home() {
+export default async function Home() {
+  const todo = await getTodo();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <AuthWrapper>
+      <main className={css.page}>
+        <div className={css.todoWrapper}>
+          {todo === null ? (
+            <div>Congrats, you have no more todos!</div>
+          ) : (
+            <>
+              <Todo todo={todo} />
+              <Link
+                className={css.addLink}
+                href={`/api/todos/mark-completed?id=${todo?.id}`}
+              >
+                <Button className={css.addBtn} label={"Mark as completed"} />
+              </Link>
+            </>
+          )}
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <Link className={css.addLink} href={"/add"}>
+          <Button className={css.addBtn} label={"Add Todo"} />
+        </Link>
       </main>
+    </AuthWrapper>
+  );
+}
+
+interface TodoProps {
+  todo: {
+    title: string;
+    description?: string | null;
+    length: TodoLength;
+  };
+}
+
+function Todo({ todo }: TodoProps) {
+  function classOfTodoLength(length: TodoLength) {
+    switch (length) {
+      case TodoLength.A_SHORT:
+        return css.short;
+      case TodoLength.B_MEDIUM:
+        return css.medium;
+      case TodoLength.C_UNKNOWN:
+        return css.unknown;
+      case TodoLength.D_LONG:
+        return css.long;
+      default:
+        return css.unknown;
+    }
+  }
+
+  return (
+    <div className={css.todo}>
+      <div className={css.title}>{todo.title}</div>
+      <div className={css.desc}>{todo.description}</div>
+      <div className={css.length}>
+        <span className={classOfTodoLength(todo.length)}>
+          {todoLengthString(todo.length)}
+        </span>
+      </div>
     </div>
   );
 }

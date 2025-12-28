@@ -1,0 +1,82 @@
+.radioWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--default-border-radius);
+  border: 1px solid var(--border);
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.long,
+.medium,
+.short,
+.unknown {
+  flex: 1;
+  height: 100%;
+  position: relative;
+
+  > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  label {
+    margin: 0 !important;
+    padding: 1rem 0.5rem;
+    display: inline;
+    pointer-events: none;
+  }
+
+  input {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    z-index: 1000;
+  }
+}
+
+.long {
+  &:global(.checked) {
+    background: var(--todo-long-bg);
+  }
+}
+
+.medium {
+  &:global(.checked) {
+    background: var(--todo-medium-bg);
+  }
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.short {
+  &:global(.checked) {
+    background: var(--todo-short-bg);
+  }
+}
+
+.unknown {
+  border-top: 1px solid var(--border);
+  &:global(.checked) {
+    background: var(--todo-unknown-bg);
+  }
+}
+
+.error {
+  color: var(--error);
+}
