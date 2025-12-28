@@ -32,9 +32,20 @@ $horizontal-padding: 0.5rem;
 .linkBtn,
 .wrapper button,
 .wrapper input[type="submit"] {
+  height: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   &:hover {
     background-color: var(--btn-hover-bg);
   }
+}
+
+.buttonInnerWrapper {
+  height: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .wrapper input,

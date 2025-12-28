@@ -4,10 +4,11 @@ import css from "@/components/input/Input.module.scss";
 import { MouseEventHandler } from "react";
 
 export interface ButtonProps {
-  label: string;
+  label?: string;
   onClick?: MouseEventHandler<HTMLButtonElement | HTMLInputElement>;
   isSubmit?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
 
 export default function Button({
@@ -15,13 +16,16 @@ export default function Button({
   onClick,
   isSubmit,
   className,
+  children,
 }: ButtonProps) {
   return (
     <div className={css.wrapper + " " + className}>
       {isSubmit ? (
         <input type={"submit"} onClick={onClick} value={label} />
       ) : (
-        <button onClick={onClick}>{label}</button>
+        <button onClick={onClick}>
+          <div className={css.buttonInnerWrapper}>{label ?? children}</div>
+        </button>
       )}
     </div>
   );

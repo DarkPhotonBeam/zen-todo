@@ -2,6 +2,8 @@
 
 import { authClient } from "@/lib/auth-client";
 import Button from "@/components/input/Button";
+import GitHubIcon from "@/icons/GitHubIcon";
+import GoogleIcon from "@/icons/Google";
 
 export default function SignInForm() {
   function getSignInHandler(provider: string) {
@@ -17,14 +19,14 @@ export default function SignInForm() {
 
   return (
     <>
-      <Button
-        onClick={getSignInHandler("github")}
-        label={"Sign-In Using GitHub"}
-      />
-      <Button
-        onClick={getSignInHandler("google")}
-        label={"Sign-In Using Google"}
-      />
+      <Button onClick={getSignInHandler("github")}>
+        <GitHubIcon />
+        Sign-In Using GitHub
+      </Button>
+      <Button onClick={getSignInHandler("google")}>
+        <GoogleIcon />
+        Sign-In Using Google
+      </Button>
     </>
   );
 }
