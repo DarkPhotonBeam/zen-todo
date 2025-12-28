@@ -1,7 +1,7 @@
 "use client";
 
 import css from "./NavMenu.module.scss";
-import { CircleX, House, LogOut, Menu, Settings, X } from "lucide-react";
+import { House, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
