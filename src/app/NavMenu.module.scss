@@ -1,7 +1,12 @@
 .nav {
   position: fixed;
-  right: 2rem;
-  bottom: 2rem;
+  right: 0;
+  bottom: 0;
+  padding: 2rem;
+  background: var(--background);
+  z-index: 10000;
+  border-top-left-radius: var(--default-border-radius);
+  //border: 1px solid var(--border);
 
   > ul {
     list-style: none;
