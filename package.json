@@ -35,5 +35,8 @@
     "sass": "^1.97.1",
     "typescript": "^5",
     "husky": "^8.0.0"
+  },
+  "engines": {
+    "pnpm": "10.5.2"
   }
 }
