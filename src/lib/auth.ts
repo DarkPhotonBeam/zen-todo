@@ -8,9 +8,7 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   baseURL: process.env.AUTH_BASEURL,
-  trustedOrigins: [
-    process.env.AUTH_BASEURL as string,
-  ],
+  trustedOrigins: [process.env.AUTH_BASEURL as string],
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
@@ -19,6 +17,6 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }
+    },
   },
 });
