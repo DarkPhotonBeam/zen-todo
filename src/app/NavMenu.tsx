@@ -6,7 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
-m;
+
 export default function NavMenu() {
   const [open, setOpen] = useState(false);
 
