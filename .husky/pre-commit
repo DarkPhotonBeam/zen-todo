@@ -3,4 +3,5 @@
 
 echo "Executing Pre-Commit Hook..."
 
+npm run type-check
 npm run lint-staged
