@@ -19,23 +19,37 @@ $horizontal-padding: 0.5rem;
     cursor: pointer;
   }
 
-  input,
-  textarea,
-  button {
-    padding: $vertical-padding $horizontal-padding;
-    font-size: inherit;
-    font-family: inherit;
-    border: 1px solid var(--border);
-    background-color: var(--input-bg);
-    border-radius: var(--default-border-radius);
-
-    &:focus {
-      border-color: var(--border-focus);
-      outline: none;
-    }
-  }
-
   textarea {
     resize: none;
+  }
+}
+
+.linkBtn {
+  width: 100%;
+  text-align: center;
+}
+
+.linkBtn,
+.wrapper button,
+.wrapper input[type="submit"] {
+  &:hover {
+    background-color: var(--btn-hover-bg);
+  }
+}
+
+.wrapper input,
+.wrapper textarea,
+.wrapper button,
+.linkBtn {
+  padding: $vertical-padding $horizontal-padding;
+  font-size: inherit;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  background-color: var(--input-bg);
+  border-radius: var(--default-border-radius);
+
+  &:focus {
+    border-color: var(--border-focus);
+    outline: none;
   }
 }
