@@ -9,6 +9,7 @@
     "lint": "eslint",
     "orm:gen": "prisma generate",
     "orm:studio": "prisma studio",
+    "orm:deploy": "prisma migrate deploy",
     "format": "prettier -w src",
     "prepare": "husky install",
     "postinstall": "prisma generate",
