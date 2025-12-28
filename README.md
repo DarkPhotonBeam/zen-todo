@@ -5,7 +5,11 @@ Zen Todo is a very minimalist todo app designed to prevent being overwhelmed by 
 ## How it works
 
 Zen Todo will only ever show one todo at a time, where Todos that can be completed quickly are
-prioritized. When you create a todo, you can select the predicted amount of time it will take to complete.
+prioritized. 
+
+When you create a todo, you can select the predicted amount of time it will take to complete.
+
+You can also push back todos if you multiple of the same predicted duration.
 
 ## Building and Running
 
@@ -20,9 +24,11 @@ pnpm install
 
 ### Prisma setup
 
-Make sure you set the ``DATABASE_URL`` environment variable. By default prisma is setup for a postgresql database in 
-``prisma/schema.prisma``. If you want to use a database other than postgresql you probably also need to install a different adapter package and update ``src/lib/prisma.ts``
-and ``prisma/schema.prisma`` accordingly. Look at the prisma documentation for further information. 
+Make sure you set the ``DATABASE_URL`` environment variable. By default prisma is 
+setup for a postgresql database in ``prisma/schema.prisma``. If you want to use a database other 
+than postgresql you probably also need to install a different adapter package and update 
+``src/lib/prisma.ts`` and ``prisma/schema.prisma`` accordingly. 
+Look at the prisma documentation for further information. 
 
 Make sure you have prisma setup correctly.
 If you're using postgresql you only need to set the ``DATABASE_URL`` environment variable.
@@ -52,9 +58,12 @@ This project uses [Better Auth](https://www.better-auth.com/) for authentication
 [GitHub](https://www.better-auth.com/docs/authentication/github) and [Google](https://www.better-auth.com/docs/authentication/google) provider.
 You need to setup environment variables as specified in the [Better Auth documentation](https://www.better-auth.com/docs/introduction).
 
-For GitHub and Google you need to set ``GITHUB_CLIENT_ID``, ``GITHUB_CLIENT_SECRET``, ``GOOGLE_CLIENT_ID`` and ``GOOGLE_CLIENT_SECRET``.
+For GitHub and Google you need to set ``GITHUB_CLIENT_ID``, ``GITHUB_CLIENT_SECRET``, 
+``GOOGLE_CLIENT_ID`` and ``GOOGLE_CLIENT_SECRET``.
 
-You also need to set ``BETTER_AUTH_BASEURL`` to your baseurl, e.g. ``https://mytodoapp.com`` as well as a secret string for Better Auth (``BETTER_AUTH_SECRET=somesecretstring``). Consult the Better Auth docs if you're unsure how to do this.
+You also need to set ``BETTER_AUTH_BASEURL`` to your baseurl, e.g. ``https://mytodoapp.com`` 
+as well as a secret string for Better Auth (``BETTER_AUTH_SECRET=somesecretstring``). 
+Consult the Better Auth docs if you're unsure how to do this.
 
 
 ### Running the app
