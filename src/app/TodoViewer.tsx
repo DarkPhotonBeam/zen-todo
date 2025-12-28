@@ -5,7 +5,6 @@ import { TodoLength } from "@/generated-types/enums";
 import { todoLengthString, debug } from "@/lib/client-helpers";
 import { useState } from "react";
 import Button from "@/components/input/Button";
-import Link from "next/link";
 
 export interface TodoViewerProps {
   initialTodo: {
