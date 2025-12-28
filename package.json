@@ -10,7 +10,8 @@
     "orm:gen": "prisma generate",
     "orm:studio": "prisma studio",
     "format": "prettier -w src",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
