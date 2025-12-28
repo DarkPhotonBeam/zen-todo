@@ -1,7 +1,8 @@
 import { validateTodo } from "@/lib/validation";
-import { NextResponse } from "next/dist/server/web/spec-extension/response";
+import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { getTodo } from "@/lib/query-todo";
 
 const MAX_TODOS = 100;
 
@@ -49,5 +50,46 @@ export async function POST(request: Request) {
   } catch (error) {
     console.warn(error);
     return NextResponse.json({ success: false, error: `Could not add todo.` });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+
+  if (!id) {
+    return NextResponse.json({ success: false, error: "Id not specified." });
+  }
+
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
+  if (!session) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized." },
+      { status: 401 },
+    );
+  }
+
+  const userId = session.user.id;
+
+  try {
+    const oldTodo = await prisma.todo.update({
+      data: { completed: true },
+      where: { id, userId },
+    });
+    const newTodo = await getTodo();
+    return NextResponse.json({
+      success: true,
+      data: {
+        oldTodo,
+        newTodo,
+      },
+    });
+  } catch {
+    return NextResponse.json({
+      success: false,
+      error: "Updating todo failed.",
+    });
   }
 }
