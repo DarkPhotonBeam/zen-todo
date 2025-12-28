@@ -26,14 +26,14 @@ export default function NavMenu() {
         <>
           <ul>
             <li>
+              <button className={"iconBtn"} onClick={signOut}>
+                <LogOut />
+              </button>
+            </li>
+            <li>
               <Link href={"/"}>
                 <House />
               </Link>
-            </li>
-            <li>
-              <a onClick={signOut}>
-                <LogOut />
-              </a>
             </li>
             {/*<li>*/}
             {/*  <Link href={"/settings"}>*/}
