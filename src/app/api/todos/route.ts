@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     });
 
     // We do not await this action since we don't need to wait for the result
-    cleanTodos(userId).then((r) => {
+    cleanTodos().then((r) => {
       if (!r || r.count === 0) return;
       logger.info(`Cleaned up ${r.count} todos.`);
     });

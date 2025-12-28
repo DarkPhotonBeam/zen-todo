@@ -1,14 +1,13 @@
 import prisma from "@/lib/prisma";
 import { logger } from "@/lib/logger";
 
-export async function cleanTodos(userId: string) {
+export async function cleanTodos() {
   const lastValidDate = new Date();
   lastValidDate.setDate(lastValidDate.getDate() - 3);
   logger.debug(`Last valid date: ${lastValidDate.toISOString()}`);
   try {
     return await prisma.todo.deleteMany({
       where: {
-        userId,
         updatedAt: {
           lt: lastValidDate,
         },
