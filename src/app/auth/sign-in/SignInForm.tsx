@@ -4,24 +4,27 @@ import { authClient } from "@/lib/auth-client";
 import Button from "@/components/input/Button";
 
 export default function SignInForm() {
-  async function signIn() {
-    await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/",
-      errorCallbackURL: "/error",
-      newUserCallbackURL: "/",
-      disableRedirect: false,
-    });
+  function getSignInHandler(provider: string) {
+    return async () =>
+      await authClient.signIn.social({
+        provider,
+        callbackURL: "/",
+        errorCallbackURL: "/error",
+        newUserCallbackURL: "/",
+        disableRedirect: false,
+      });
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        signIn().then();
-      }}
-    >
-      <Button isSubmit={true} label={"Sign-In Using GitHub"} />
-    </form>
+    <>
+      <Button
+        onClick={getSignInHandler("github")}
+        label={"Sign-In Using GitHub"}
+      />
+      <Button
+        onClick={getSignInHandler("google")}
+        label={"Sign-In Using Google"}
+      />
+    </>
   );
 }
