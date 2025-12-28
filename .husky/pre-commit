@@ -3,4 +3,4 @@
 
 echo "Executing Pre-Commit Hook..."
 
-npm run format
+pnpm lint-staged
