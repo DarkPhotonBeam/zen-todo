@@ -4,7 +4,8 @@ import css from "./TodoViewer.module.scss";
 import { TodoLength } from "@/generated-types/enums";
 import { todoLengthString, debug } from "@/lib/client-helpers";
 import { useState } from "react";
-import Button from "@/components/input/Button";
+import { ClockPlus, SquareCheckBig } from "lucide-react";
+import { TodoAction } from "@/lib/todo-types";
 
 export interface TodoViewerProps {
   initialTodo: {
@@ -13,10 +14,36 @@ export interface TodoViewerProps {
     description?: string | null;
     length: TodoLength;
   } | null;
+  initialTodoCounts: {
+    shortCount: number;
+    mediumCount: number;
+    longCount: number;
+    unknownCount: number;
+    totalCount: number;
+  };
 }
 
-export default function TodoViewer({ initialTodo }: TodoViewerProps) {
+export default function TodoViewer({
+  initialTodo,
+  initialTodoCounts,
+}: TodoViewerProps) {
   const [todo, setTodo] = useState(initialTodo);
+  const [todoCounts, setTodoCounts] = useState(initialTodoCounts);
+
+  function getLengthCount(length: TodoLength) {
+    switch (length) {
+      case TodoLength.A_SHORT:
+        return todoCounts.shortCount;
+      case TodoLength.B_MEDIUM:
+        return todoCounts.mediumCount;
+      case TodoLength.C_UNKNOWN:
+        return todoCounts.unknownCount;
+      case TodoLength.D_LONG:
+        return todoCounts.longCount;
+      default:
+        return todoCounts.totalCount;
+    }
+  }
 
   function classOfTodoLength(length: TodoLength) {
     switch (length) {
@@ -33,9 +60,15 @@ export default function TodoViewer({ initialTodo }: TodoViewerProps) {
     }
   }
 
-  async function markCompleted() {
+  function getActionHandler(action: TodoAction) {
+    return async () => {
+      return await performAction(action);
+    };
+  }
+
+  async function performAction(action: TodoAction) {
     if (!todo || !todo.id) return;
-    const res = await fetch(`/api/todos?id=${todo.id}`, {
+    const res = await fetch(`/api/todos?id=${todo.id}&action=${action}`, {
       method: "PUT",
     });
     const body = await res.json();
@@ -46,6 +79,7 @@ export default function TodoViewer({ initialTodo }: TodoViewerProps) {
     }
     debug(body.data.newTodo);
     setTodo(body.data.newTodo);
+    setTodoCounts(body.data.todoCounts);
   }
 
   if (!todo) {
@@ -61,13 +95,20 @@ export default function TodoViewer({ initialTodo }: TodoViewerProps) {
           <span className={classOfTodoLength(todo.length)}>
             {todoLengthString(todo.length)}
           </span>
+          <div className={css.todoActions}>
+            {getLengthCount(todo.length) <= 1 ? (
+              ""
+            ) : (
+              <button onClick={getActionHandler("pushback")}>
+                <ClockPlus />
+              </button>
+            )}
+            <button onClick={getActionHandler("mark-completed")}>
+              <SquareCheckBig />
+            </button>
+          </div>
         </div>
       </div>
-      <Button
-        onClick={markCompleted}
-        className={css.addBtn}
-        label={"Mark as completed"}
-      />
     </>
   );
 }

@@ -16,9 +16,28 @@
 }
 
 .length {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   span {
     padding: 0.25rem 1rem;
     border-radius: 9999px;
+  }
+}
+
+.todoActions {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  > button {
+    display: inline-flex;
+    align-items: flex-end;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    margin-left: 2rem;
   }
 }
 

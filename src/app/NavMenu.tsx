@@ -35,11 +35,11 @@ export default function NavMenu() {
                 <LogOut />
               </a>
             </li>
-            <li>
-              <Link href={"/settings"}>
-                <Settings />
-              </Link>
-            </li>
+            {/*<li>*/}
+            {/*  <Link href={"/settings"}>*/}
+            {/*    <Settings />*/}
+            {/*  </Link>*/}
+            {/*</li>*/}
           </ul>
           <X className={css.toggle} onClick={() => setOpen(false)} />
         </>

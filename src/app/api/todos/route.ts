@@ -1,10 +1,11 @@
-import { validateTodo } from "@/lib/validation";
+import { validateTodoPutParams, validateTodo } from "@/lib/validation";
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { getTodo } from "@/lib/query-todo";
+import { getLengthCounts, getTodo } from "@/lib/query-todo";
 import { cleanTodos } from "@/lib/clean-todos";
 import { logger } from "@/lib/logger";
+import { TodoAction } from "@/lib/todo-types";
 
 const MAX_TODOS = 100;
 
@@ -62,11 +63,32 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
+  const searchParams = request.nextUrl.searchParams;
+  const idRaw = searchParams.get("id");
+  const actionRaw = searchParams.get("action");
 
-  if (!id) {
+  if (!idRaw) {
     return NextResponse.json({ success: false, error: "Id not specified." });
   }
+
+  if (!actionRaw) {
+    return NextResponse.json({
+      success: false,
+      error: "Action not specified.",
+    });
+  }
+
+  const sanitized = validateTodoPutParams({ id: idRaw, action: actionRaw });
+
+  if (!sanitized.success) {
+    return NextResponse.json({
+      success: false,
+      error: sanitized.error.issues[0].message,
+    });
+  }
+
+  const id = sanitized.data.id;
+  const action = sanitized.data.action;
 
   const session = await auth.api.getSession({
     headers: request.headers,
@@ -82,16 +104,32 @@ export async function PUT(request: NextRequest) {
   const userId = session.user.id;
 
   try {
+    const newData =
+      action === TodoAction.PUSHBACK
+        ? { numPushbacks: { increment: 1 } }
+        : { completed: true };
     const oldTodo = await prisma.todo.update({
-      data: { completed: true },
+      data: newData,
       where: { id, userId },
     });
-    const newTodo = await getTodo();
+    const todoRes = await getTodo();
+
+    if (!todoRes.success || !todoRes.data) {
+      return NextResponse.json(todoRes);
+    }
+
+    const lengthRes = await getLengthCounts();
+
+    if (!lengthRes.success || !lengthRes.data) {
+      return NextResponse.json({ success: false, error: lengthRes.error });
+    }
+
     return NextResponse.json({
       success: true,
       data: {
         oldTodo,
-        newTodo,
+        newTodo: todoRes.data.todo,
+        todoCounts: lengthRes.data.todoCounts,
       },
     });
   } catch {

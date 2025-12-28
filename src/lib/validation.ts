@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TodoLength } from "@/generated-types/enums";
+import { TodoAction } from "@/lib/todo-types";
 
 const TodoSchema = z.object({
   title: z
@@ -12,6 +13,11 @@ const TodoSchema = z.object({
   length: z.enum(TodoLength, { error: "Invalid duration." }),
 });
 
+const TodoActionSchema = z.object({
+  id: z.string().nonempty(),
+  action: z.enum(TodoAction, { error: "Invalid action." }),
+});
+
 export function validateTodo(
   title: unknown,
   description: unknown,
@@ -19,4 +25,8 @@ export function validateTodo(
 ) {
   const input = { title, description, length };
   return TodoSchema.safeParse(input);
+}
+
+export function validateTodoPutParams(input: { id: unknown; action: unknown }) {
+  return TodoActionSchema.safeParse(input);
 }
