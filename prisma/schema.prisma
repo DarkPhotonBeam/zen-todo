@@ -101,6 +101,7 @@ model Todo {
   userId  String
   user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   completed Boolean @default(false)
+  numPushbacks Int @default(0)
 
   @@map("todo")
 }
