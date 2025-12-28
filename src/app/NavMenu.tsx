@@ -11,6 +11,7 @@ export default function NavMenu() {
   const [open, setOpen] = useState(false);
 
   async function signOut() {
+    setOpen(false);
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -31,7 +32,7 @@ export default function NavMenu() {
               </button>
             </li>
             <li>
-              <Link href={"/"}>
+              <Link onClick={() => setOpen(false)} href={"/"}>
                 <House />
               </Link>
             </li>
