@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export interface AuthWrapperProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default async function Index({ children }: AuthWrapperProps) {
