@@ -5,6 +5,7 @@ import Button from "@/components/input/Button";
 import { getTodo } from "@/lib/fetch-todo";
 import { TodoLength } from "@/generated-types/enums";
 import { todoLengthString } from "@/lib/client-helpers";
+import SignOutBtn from "@/components/SignOutBtn";
 
 export default async function Home() {
   const todo = await getTodo();
@@ -21,6 +22,7 @@ export default async function Home() {
               <Link
                 className={css.addLink}
                 href={`/api/todos/mark-completed?id=${todo?.id}`}
+                prefetch={false}
               >
                 <Button className={css.addBtn} label={"Mark as completed"} />
               </Link>
@@ -31,6 +33,7 @@ export default async function Home() {
           <Button className={css.addBtn} label={"Add Todo"} />
         </Link>
       </main>
+      <SignOutBtn />
     </AuthWrapper>
   );
 }

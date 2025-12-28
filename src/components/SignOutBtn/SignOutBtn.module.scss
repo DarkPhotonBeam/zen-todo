@@ -1,0 +1,10 @@
+.btn {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  color: #aaa;
+  cursor: pointer;
+  &:hover {
+    color: #fff;
+  }
+}
