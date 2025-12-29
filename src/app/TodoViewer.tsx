@@ -6,6 +6,9 @@ import { todoLengthString, debug } from "@/lib/client-helpers";
 import { useState } from "react";
 import { ClockPlus, SquareCheckBig } from "lucide-react";
 import { TodoAction } from "@/lib/todo-types";
+import { motion, AnimatePresence } from "motion/react";
+import LinkButton from "@/components/input/LinkButton";
+import { Transition } from "motion";
 
 export interface TodoViewerProps {
   initialTodo: {
@@ -82,33 +85,67 @@ export default function TodoViewer({
     setTodoCounts(body.data.todoCounts);
   }
 
-  if (!todo) {
-    return <div>Congrats, you have no more todos!</div>;
-  }
+  const offStyle = { scale: 0 };
+  const onStyle = { scale: 1 };
+  const transition = { duration: 0.2, ease: "easeInOut" } as Transition;
 
   return (
     <>
-      <div className={css.todo}>
-        <div className={css.title}>{todo.title}</div>
-        <div className={css.desc}>{todo.description}</div>
-        <div className={css.length}>
-          <span className={classOfTodoLength(todo.length)}>
-            {todoLengthString(todo.length)}
-          </span>
-          <div className={css.todoActions}>
-            {getLengthCount(todo.length) <= 1 ? (
-              ""
-            ) : (
-              <button onClick={getActionHandler("pushback")}>
-                <ClockPlus />
-              </button>
-            )}
-            <button onClick={getActionHandler("mark-completed")}>
-              <SquareCheckBig />
-            </button>
-          </div>
-        </div>
-      </div>
+      <motion.div
+        layout
+        className={css.todoWrapper}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
+        transition={transition}
+      >
+        <AnimatePresence mode={"popLayout"}>
+          {todo ? (
+            <motion.div
+              layout
+              key={todo.id}
+              initial={offStyle}
+              animate={onStyle}
+              exit={offStyle}
+              transition={transition}
+              className={css.todo}
+            >
+              <div className={css.title}>{todo.title}</div>
+              <div className={css.desc}>{todo.description}</div>
+              <div className={css.length}>
+                <span className={classOfTodoLength(todo.length)}>
+                  {todoLengthString(todo.length)}
+                </span>
+                <div className={css.todoActions}>
+                  {getLengthCount(todo.length) <= 1 ? (
+                    ""
+                  ) : (
+                    <button onClick={getActionHandler("pushback")}>
+                      <ClockPlus />
+                    </button>
+                  )}
+                  <button onClick={getActionHandler("mark-completed")}>
+                    <SquareCheckBig />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              layout
+              key={todo ? "yes" : "no"}
+              initial={offStyle}
+              animate={onStyle}
+              exit={offStyle}
+              transition={transition}
+              className={css.noTodo}
+            >
+              Congrats, you have no more todos!
+            </motion.div>
+          )}
+          <LinkButton label={"Add Todo"} href={"/add"} />
+        </AnimatePresence>
+      </motion.div>
     </>
   );
 }

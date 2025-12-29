@@ -1,7 +1,9 @@
 "use client";
 
 import css from "@/components/input/Input.module.scss";
+import { motion } from "motion/react";
 import Link from "next/link";
+import { hoverStyle, tapStyle } from "@/components/input";
 
 export interface LinkButtonProps {
   label: string;
@@ -17,8 +19,14 @@ export default function LinkButton({
   target,
 }: LinkButtonProps) {
   return (
-    <Link className={css.linkBtn + " " + className} href={href} target={target}>
-      {label}
-    </Link>
+    <motion.div layout whileHover={hoverStyle} whileTap={tapStyle}>
+      <Link
+        className={css.linkBtn + " " + className}
+        href={href}
+        target={target}
+      >
+        {label}
+      </Link>
+    </motion.div>
   );
 }

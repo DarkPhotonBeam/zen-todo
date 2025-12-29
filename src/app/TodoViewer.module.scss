@@ -25,6 +25,16 @@
   }
 }
 
+.todoWrapper {
+  margin-bottom: 2rem;
+  width: 100%;
+  position: relative;
+}
+
+.noTodo {
+  margin-bottom: 2rem;
+}
+
 .todoActions {
   height: 100%;
   display: inline-flex;

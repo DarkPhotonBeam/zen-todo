@@ -1,5 +1,8 @@
 import css from "./Input.module.scss";
 
+export const hoverStyle = { scale: 1.05 };
+export const tapStyle = { scale: 1.025 };
+
 export interface InputProps {
   label: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;

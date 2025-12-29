@@ -7,6 +7,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { debug } from "@/lib/client-helpers";
+import { AnimatePresence, motion } from "motion/react";
 
 export default function NavMenu() {
   const [open, setOpen] = useState(false);
@@ -39,32 +40,57 @@ export default function NavMenu() {
 
   if (!loggedIn) return null;
 
+  const offStyle = { scale: 0 };
+  const onStyle = { scale: 1 };
+
   return (
-    <nav className={css.nav}>
-      {open ? (
-        <>
-          <ul>
-            <li>
-              <button className={"iconBtn"} onClick={signOut}>
-                <LogOut />
-              </button>
-            </li>
-            <li>
-              <Link onClick={() => setOpen(false)} href={"/"}>
-                <House />
-              </Link>
-            </li>
-            {/*<li>*/}
-            {/*  <Link href={"/settings"}>*/}
-            {/*    <Settings />*/}
-            {/*  </Link>*/}
-            {/*</li>*/}
-          </ul>
-          <X className={css.toggle} onClick={() => setOpen(false)} />
-        </>
-      ) : (
-        <Menu className={css.toggle} onClick={() => setOpen(true)} />
-      )}
-    </nav>
+    <motion.nav
+      layout
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      className={css.nav}
+    >
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            key={open ? "open" : "not-open"}
+            layout
+            initial={offStyle}
+            animate={onStyle}
+            exit={offStyle}
+          >
+            <ul>
+              <li>
+                <button className={"iconBtn"} onClick={signOut}>
+                  <LogOut />
+                </button>
+              </li>
+              <li>
+                <Link onClick={() => setOpen(false)} href={"/"}>
+                  <House />
+                </Link>
+              </li>
+              {/*<li>*/}
+              {/*  <Link href={"/settings"}>*/}
+              {/*    <Settings />*/}
+              {/*  </Link>*/}
+              {/*</li>*/}
+            </ul>
+            <X className={css.toggle} onClick={() => setOpen(false)} />
+          </motion.div>
+        ) : (
+          <motion.button
+            key={open ? "open" : "not-open"}
+            layout
+            initial={offStyle}
+            animate={onStyle}
+            exit={offStyle}
+            className={"iconBtn"}
+          >
+            <Menu className={css.toggle} onClick={() => setOpen(true)} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }

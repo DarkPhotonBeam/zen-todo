@@ -2,6 +2,8 @@
 
 import css from "@/components/input/Input.module.scss";
 import { MouseEventHandler } from "react";
+import { motion } from "motion/react";
+import { hoverStyle, tapStyle } from "@/components/input";
 
 export interface ButtonProps {
   label?: string;
@@ -19,7 +21,11 @@ export default function Button({
   children,
 }: ButtonProps) {
   return (
-    <div className={css.wrapper + " " + className}>
+    <motion.div
+      whileHover={hoverStyle}
+      whileTap={tapStyle}
+      className={css.wrapper + " " + className}
+    >
       {isSubmit ? (
         <input type={"submit"} onClick={onClick} value={label} />
       ) : (
@@ -27,6 +33,6 @@ export default function Button({
           <div className={css.buttonInnerWrapper}>{label ?? children}</div>
         </button>
       )}
-    </div>
+    </motion.div>
   );
 }

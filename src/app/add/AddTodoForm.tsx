@@ -15,6 +15,7 @@ import css from "./AddTodoForm.module.scss";
 import RadioInput from "@/components/input/RadioInput";
 import { validateTodo } from "@/lib/validation";
 import { redirect } from "next/navigation";
+import { motion } from "motion/react";
 
 export default function AddTodoForm() {
   const [title, setTitle] = useState("");
@@ -58,7 +59,12 @@ export default function AddTodoForm() {
   }
 
   return (
-    <form onSubmit={submit}>
+    <motion.form
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      onSubmit={submit}
+    >
+      <h1 className={css.h1}>Add Todo</h1>
       <fieldset>
         <TextInput
           label={"Title:"}
@@ -104,7 +110,7 @@ export default function AddTodoForm() {
       </fieldset>
       <Button isSubmit={true} label={"Add Todo"} onClick={test} />
       <span className={css.error}>{error}</span>
-    </form>
+    </motion.form>
   );
 }
 

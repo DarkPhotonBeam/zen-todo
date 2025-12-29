@@ -13,10 +13,19 @@
   }
 }
 
+.h1 {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.form {
+}
+
 .long,
 .medium,
 .short,
 .unknown {
+  transition: background 200ms ease-in-out;
   flex: 1;
   height: 100%;
   position: relative;

@@ -15,13 +15,10 @@ export default async function Home() {
   return (
     <AuthWrapper>
       <main className={css.page}>
-        <div className={css.todoWrapper}>
-          <TodoViewer
-            initialTodo={todoRes.data.todo}
-            initialTodoCounts={todoRes.data.todoCounts}
-          />
-        </div>
-        <LinkButton label={"Add Todo"} href={"/add"} />
+        <TodoViewer
+          initialTodo={todoRes.data.todo}
+          initialTodoCounts={todoRes.data.todoCounts}
+        />
       </main>
     </AuthWrapper>
   );
